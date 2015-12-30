@@ -13,7 +13,7 @@ exec ros -Q -- $0 "$@"
 
 (ql:quickload :flexi-streams)
 
-(require 'toy-gun)
+(require 'plastic-toy-gun)
 
 (defvar +NEWLINE+ 10)
 
@@ -30,7 +30,8 @@ exec ros -Q -- $0 "$@"
         T))))
 
 (defun read-line-with-buffer (stream)
-  (let ((buffer (make-array 512 :fill-pointer 0)))
+  (let ((buffer (make-array 10 :fill-pointer 0)))
+    (setf (fill-pointer buffer) 0)
     (loop for temp = (read-byte stream nil nil)
           while (collect temp buffer))
      buffer))
@@ -45,6 +46,8 @@ exec ros -Q -- $0 "$@"
 
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (setq toy-gun:*cartridge* #'echo-ink)
-  (toy-gun:start :port 38080 :address "0.0.0.0"))
+  (let* ((server (plastic-toy-gun:make-server :port 38081 :address "0.0.0.0")))
+    (setq plastic-toy-gun:*cartridge* #'echo-ink)
+    (plastic-toy-gun:start server)
+    (plastic-toy-gun:dispose server)))
 #+begin_end
