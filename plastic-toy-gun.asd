@@ -4,11 +4,11 @@ Author: mocchit
 |#
 
 (in-package :cl-user)
-(defpackage toy-gun-asd
+(defpackage plastic-toy-gun-asd
   (:use :cl :asdf))
-(in-package :toy-gun-asd)
+(in-package :plastic-toy-gun-asd)
 
-(defsystem toy-gun
+(defsystem plastic-toy-gun
   :version "0.0.1"
   :author "mocchi"
   :license "BSD License"
@@ -16,5 +16,5 @@ Author: mocchit
                :bordeaux-threads)
   :components ((:module "src"
                         :components
-                ((:file "toy-gun"))))
+                ((:file "plastic-toy-gun"))))
   :description "abstract server")

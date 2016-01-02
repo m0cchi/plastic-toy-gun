@@ -5,14 +5,12 @@
   (:use :bordeaux-threads)
   (:export :start
            :dispose
-           :*log*
            :*debug-log*
            :*cartridge*
            :make-server))
 
 (in-package :plastic-toy-gun)
 
-(defparameter *log* t)
 (defparameter *debug-log* t)
 (defparameter *cartridge* '())
 
