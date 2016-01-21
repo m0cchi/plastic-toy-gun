@@ -30,14 +30,19 @@
                      (funcall *cartridge* stream))
    (error (c) (format *debug-log* "~%dump error: ~a~%" c))))
 
-(defun start (server)
+(defun start (server &key (async nil))
   (unless *cartridge*
     (error "(setq plastic-toy-gun:*cartrige* #'your-ink)~%"))
   (format *debug-log* "start server~%")
-  (let ((sock '()))
-    (unwind-protect
-        (loop (setq sock (accept server))
-              (bordeaux-threads:make-thread
-               (lambda ()
-                 (handler sock)))))
-    (dispose server)))
+  (let ((sock '())
+        (proc (lambda ()
+                (unwind-protect
+                    (loop (setq sock (accept server))
+                          (bordeaux-threads:make-thread
+                           (lambda ()
+                             (handler sock)))))
+                (dispose server))))
+    (if async
+        (bordeaux-threads:make-thread proc)
+      (funcall proc))))
+        
